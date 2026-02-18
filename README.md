@@ -2,11 +2,19 @@
 
 Backend project using `Hono + Drizzle + SQLite`.
 
-## Run
+## Package Manager
 
-```powershell
+- Recommended: `pnpm`
+- Also supported: `npm`
+
+## Environment File
+
+Before running, create `.env` in the project root and copy values from `.env.example`.
+
+## Run (pnpm)
+
+```bash
 pnpm install
-Copy-Item .env.example .env
 pnpm db:generate
 pnpm db:migrate
 pnpm db:seed
@@ -15,11 +23,26 @@ pnpm dev
 
 Server: `http://localhost:3000`
 
+## Run (npm)
+
+```bash
+npm install
+npm run db:generate
+npm run db:migrate
+npm run db:seed
+npm run dev
+```
+
 ## Reset DB
 
 ```bash
 pnpm db:reset
 pnpm db:seed
+```
+
+```bash
+npm run db:reset
+npm run db:seed
 ```
 
 ## Troubleshooting
@@ -29,6 +52,12 @@ If you see `spawn EPERM` when running `drizzle-kit` or `tsx`:
 ```bash
 pnpm approve-builds
 pnpm rebuild esbuild
+```
+
+If you use `npm`, run:
+
+```bash
+npm rebuild esbuild
 ```
 
 ## Test Users
