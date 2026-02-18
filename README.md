@@ -22,6 +22,15 @@ pnpm db:reset
 pnpm db:seed
 ```
 
+## Troubleshooting
+
+If you see `spawn EPERM` when running `drizzle-kit` or `tsx`:
+
+```bash
+pnpm approve-builds
+pnpm rebuild esbuild
+```
+
 ## Test Users
 
 - `alice@example.com / Password123!`
