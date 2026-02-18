@@ -62,4 +62,4 @@ pnpm rebuild esbuild
 ## ER Diagram
 
 - Source file: `er-diagram.mmd`
-- Png file : ![ER Diagram](er-diagram.png)
+- Image: ![ER Diagram](er-diagram.png)
