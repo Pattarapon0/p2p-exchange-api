@@ -1,0 +1,152 @@
+erDiagram
+    USERS {
+        bigint id PK
+        varchar email UK
+        varchar password_hash
+        varchar status
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ASSETS {
+        bigint id PK
+        varchar code UK
+        varchar type
+        int precision
+        boolean is_active
+    }
+
+    MARKETS {
+        bigint id PK
+        bigint base_asset_id FK
+        bigint quote_asset_id FK
+        boolean is_active
+    }
+
+    WALLETS {
+        bigint id PK
+        bigint user_id FK
+        bigint asset_id FK
+        decimal available_balance
+        decimal locked_balance
+        int version
+        timestamp updated_at
+    }
+
+    ORDERS {
+        bigint id PK
+        bigint user_id FK
+        bigint market_id FK
+        varchar side
+        decimal price
+        decimal base_amount_total
+        decimal base_amount_remaining
+        decimal min_quote_amount
+        decimal max_quote_amount
+        varchar status
+        timestamp expires_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    TRADES {
+        bigint id PK
+        bigint order_id FK
+        bigint maker_user_id FK
+        bigint taker_user_id FK
+        bigint buyer_user_id FK
+        bigint seller_user_id FK
+        decimal price
+        decimal base_amount
+        decimal quote_amount
+        varchar status
+        varchar payment_ref
+        timestamp paid_at
+        timestamp released_at
+        timestamp completed_at
+        varchar cancel_reason
+        varchar idempotency_key UK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    INTERNAL_TRANSFERS {
+        bigint id PK
+        bigint from_user_id FK
+        bigint to_user_id FK
+        bigint asset_id FK
+        decimal amount
+        varchar status
+        varchar note
+        varchar idempotency_key UK
+        timestamp created_at
+        timestamp completed_at
+    }
+
+    EXTERNAL_WITHDRAWALS {
+        bigint id PK
+        bigint user_id FK
+        bigint asset_id FK
+        decimal amount
+        decimal fee
+        decimal net_amount
+        varchar network
+        varchar address
+        varchar status
+        varchar provider
+        varchar provider_tx_id
+        varchar provider_status
+        varchar idempotency_key UK
+        timestamp requested_at
+        timestamp updated_at
+    }
+
+    LEDGER_TRANSACTIONS {
+        bigint id PK
+        varchar tx_type
+        varchar reference_type
+        bigint reference_id
+        varchar status
+        varchar idempotency_key UK
+        bigint created_by_user_id FK
+        timestamp created_at
+    }
+
+    LEDGER_ENTRIES {
+        bigint id PK
+        bigint ledger_tx_id FK
+        bigint wallet_id FK
+        varchar entry_type
+        decimal amount
+        decimal available_before
+        decimal available_after
+        decimal locked_before
+        decimal locked_after
+        timestamp created_at
+    }
+
+    USERS ||--o{ WALLETS : owns
+    ASSETS ||--o{ WALLETS : defines
+
+    ASSETS ||--o{ MARKETS : base_asset
+    ASSETS ||--o{ MARKETS : quote_asset
+
+    USERS ||--o{ ORDERS : creates
+    MARKETS ||--o{ ORDERS : has
+
+    ORDERS ||--o{ TRADES : filled_by
+    USERS ||--o{ TRADES : maker
+    USERS ||--o{ TRADES : taker
+    USERS ||--o{ TRADES : buyer
+    USERS ||--o{ TRADES : seller
+
+    USERS ||--o{ INTERNAL_TRANSFERS : sends
+    USERS ||--o{ INTERNAL_TRANSFERS : receives
+    ASSETS ||--o{ INTERNAL_TRANSFERS : asset
+
+    USERS ||--o{ EXTERNAL_WITHDRAWALS : requests
+    ASSETS ||--o{ EXTERNAL_WITHDRAWALS : asset
+
+    USERS ||--o{ LEDGER_TRANSACTIONS : created_by
+    LEDGER_TRANSACTIONS ||--o{ LEDGER_ENTRIES : contains
+    WALLETS ||--o{ LEDGER_ENTRIES : affects
