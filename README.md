@@ -1,6 +1,6 @@
 # P2P Crypto Exchange Backend
 
-Backend exam project using `Hono + Drizzle + SQLite`.
+Backend project using `Hono + Drizzle + SQLite`.
 
 ## Run
 
@@ -62,3 +62,4 @@ pnpm rebuild esbuild
 ## ER Diagram
 
 - Source file: `er-diagram.mmd`
+- Png file : ![ER Diagram](er-diagram.png)
